@@ -1,0 +1,8 @@
+SPORTS,Ferrari,F8,Automatic,2023,300000.00,710,2,10000,false
+SPORTS,Porsche,911,Manual,2023,120000.00,450,2,5000,false
+SEDAN,Toyota,Camry,Automatic,2023,25000.00,200,5,15000,false
+SEDAN,Honda,Accord,CVT,2023,27000.00,192,5,12000,false
+SUV,Ford,Explorer,Automatic,2023,35000.00,300,7,8000,false
+SUV,Toyota,RAV4,Automatic,2023,28000.00,203,5,20000,false
+TRUCK,Ford,F-150,Automatic,2023,45000.00,400,5,5000,true
+TRUCK,Chevrolet,Silverado,Automatic,2023,43000.00,355,5,7000,true
