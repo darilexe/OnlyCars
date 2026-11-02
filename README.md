@@ -1,6 +1,8 @@
 # OnlyCars — Vehicle Sales System
 
-A Java Swing desktop app for a small car dealership. Customers can browse the inventory by category and buy a car with a loan calculator, or sell their own car and get an offer based on its mileage. Built as the final project for an Object-Oriented Programming course at FEU Tech (November 2024).
+A Java Swing desktop app for a small car dealership. Customers can browse the inventory by category and buy a car with a loan calculator, or sell their own car and get an offer based on its mileage. Built as a team final project for an Object-Oriented Programming course at FEU Tech (November 2024).
+
+![Buy screen showing the car inventory](screenshots/buy.png)
 
 ## Features
 
@@ -9,6 +11,12 @@ A Java Swing desktop app for a small car dealership. Customers can browse the in
 - **Receipt:** collects the buyer's name, address and contact number, then shows a purchase receipt.
 - **Sell a car:** enter a car's details and asking price; the app makes an offer discounted by mileage (5% to 30%), and adds the car to the inventory if you accept.
 - **File-based inventory:** cars are stored in `Cars.txt` and saved after every purchase or sale. A default inventory is created on first run.
+
+## Screenshots
+
+| Loan calculator | Selling a car |
+| --- | --- |
+| ![Loan calculator with a 24-month plan](screenshots/loan-calculator.png) | ![Sell form with a mileage-based offer](screenshots/sell.png) |
 
 ## Design
 
