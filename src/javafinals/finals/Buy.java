@@ -74,7 +74,7 @@ public class Buy extends JFrame {
         setSize(1000, 600);
         setLocationRelativeTo(null);
 
-        setLayout(new GridLayout(1, 2, 10, 0));
+        setLayout(new BorderLayout(10, 0));
 
         // Left panel for categories
         leftPanel = new JPanel();
@@ -95,8 +95,11 @@ public class Buy extends JFrame {
         rightPanel.setLayout(new GridLayout(0, 2, 10, 10));
         rightPanel.setBorder(BorderFactory.createTitledBorder("Available Cars"));
 
-        add(new JScrollPane(leftPanel));
-        add(new JScrollPane(rightPanel));
+        // Narrow category column on the left, car cards fill the rest
+        JScrollPane categoryScroll = new JScrollPane(leftPanel);
+        categoryScroll.setPreferredSize(new Dimension(200, 0));
+        add(categoryScroll, BorderLayout.WEST);
+        add(new JScrollPane(rightPanel), BorderLayout.CENTER);
     }
 
     private void addCategoryButton(String label, String categoryType) {

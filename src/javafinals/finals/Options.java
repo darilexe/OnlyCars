@@ -70,11 +70,12 @@ public class Options extends JFrame implements ActionListener {
         exit.addActionListener(this);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
-        splitPane.setDividerLocation(650);
+        splitPane.setDividerLocation(450);
         splitPane.setResizeWeight(0.7);
 
         add(splitPane, BorderLayout.CENTER);
         setSize(800, 400);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -84,12 +85,10 @@ public class Options extends JFrame implements ActionListener {
         if (e.getSource() == buyC) {
             Buy buyCar = new Buy();
             buyCar.setVisible(true);
-            buyCar.setSize(600, 300);
             this.dispose();
         } else if (e.getSource() == sellC) {
             Sell sellCar = new Sell();
             sellCar.setVisible(true);
-            sellCar.setSize(600, 300);
             this.dispose();
         } else if (e.getSource() == exit) {
             System.exit(0);

@@ -241,7 +241,6 @@ public class Sell extends JFrame implements ActionListener {
     private void openOptionsAndClose() {
         Options opt = new Options();
         opt.setVisible(true);
-        opt.setSize(600, 300);
         this.dispose();
     }
 
