@@ -1,6 +1,6 @@
 # OnlyCars — Vehicle Sales System
 
-A Java w/GUI desktop app for a small car dealership. Customers can browse the inventory by category and buy a car with a loan calculator, or sell their own car and get an offer based on its mileage. Built as a team final project for an Object-Oriented Programming course at FEU Tech (November 2024).
+A Java w/GUI desktop app for a small car dealership. Customers can browse the inventory by category and buy a car with a loan calculator, or sell their own car and get an offer based on its mileage. Built as a group final project for an Object-Oriented Programming course at FEU Tech (November 2024).
 
 ![Buy screen showing the car inventory](screenshots/buy.png)
 
