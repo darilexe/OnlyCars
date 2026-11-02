@@ -2,8 +2,8 @@ package javafinals.finals;
 
 
 public class SUV extends Car {
-    public SUV(String brand, String model, String transmission, int year, double price, int topSpeed, int mileage, int seats) {
-        super(brand, model, transmission, year, price, topSpeed, mileage, seats);
+    public SUV(String brand, String model, String transmission, int year, double price, int horsepower, int mileage, int seats) {
+        super(brand, model, transmission, year, price, horsepower, mileage, seats);
     }
 
     @Override

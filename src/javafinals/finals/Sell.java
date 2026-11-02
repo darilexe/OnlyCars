@@ -29,7 +29,7 @@ public class Sell extends JFrame implements ActionListener {
     private final JTextField model;
     private final JTextField transmission;
     private final JTextField year;
-    private final JTextField topSpeed;
+    private final JTextField horsepower;
     private final JTextField seats;
     private final JTextField mileage;
     private final JTextField initialPrice;
@@ -70,10 +70,10 @@ public class Sell extends JFrame implements ActionListener {
         year = new JTextField();
         inputPanel.add(year);
 
-        // Top speed input
-        inputPanel.add(new JLabel("Enter Top Speed:"));
-        topSpeed = new JTextField();
-        inputPanel.add(topSpeed);
+        // Horsepower input
+        inputPanel.add(new JLabel("Enter Horsepower:"));
+        horsepower = new JTextField();
+        inputPanel.add(horsepower);
 
         // Seats input
         inputPanel.add(new JLabel("Enter Number of Seats:"));
@@ -189,16 +189,16 @@ public class Sell extends JFrame implements ActionListener {
             String transmissionText = transmission.getText().trim();
             int yearValue = Integer.parseInt(year.getText().trim());
             double price = Double.parseDouble(buyingPrice.getText().trim());
-            int topSpeedValue = Integer.parseInt(topSpeed.getText().trim());
+            int horsepowerValue = Integer.parseInt(horsepower.getText().trim());
             int seatsValue = Integer.parseInt(seats.getText().trim());
             int mileageValue = Integer.parseInt(mileage.getText().trim());
             String selectedType = (String) carType.getSelectedItem();
 
             return switch (selectedType) {
-                case "SportsCar" -> new SportsCar(brandText, modelText, transmissionText, yearValue, price, topSpeedValue, mileageValue, seatsValue);
-                case "Truck" -> new Truck(brandText, modelText, transmissionText, yearValue, price, topSpeedValue, mileageValue, seatsValue);
-                case "SUV" -> new SUV(brandText, modelText, transmissionText, yearValue, price, topSpeedValue, mileageValue, seatsValue);
-                default -> new Sedan(brandText, modelText, transmissionText, yearValue, price, topSpeedValue, mileageValue, seatsValue);
+                case "SportsCar" -> new SportsCar(brandText, modelText, transmissionText, yearValue, price, horsepowerValue, mileageValue, seatsValue);
+                case "Truck" -> new Truck(brandText, modelText, transmissionText, yearValue, price, horsepowerValue, mileageValue, seatsValue);
+                case "SUV" -> new SUV(brandText, modelText, transmissionText, yearValue, price, horsepowerValue, mileageValue, seatsValue);
+                default -> new Sedan(brandText, modelText, transmissionText, yearValue, price, horsepowerValue, mileageValue, seatsValue);
             };
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Please ensure all numeric fields contain valid numbers");
@@ -210,7 +210,14 @@ public class Sell extends JFrame implements ActionListener {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                cars.add(createCarFromString(parts));
+                if (parts.length != 10) {
+                    continue; // skip blank or malformed lines
+                }
+                try {
+                    cars.add(createCarFromString(parts));
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Skipping invalid car entry: " + line);
+                }
             }
         } catch (IOException e) {
             // If file doesn't exist yet, that's okay - just start with empty list
@@ -246,16 +253,16 @@ public class Sell extends JFrame implements ActionListener {
             String transmission = parts[3].trim();
             int year = Integer.parseInt(parts[4].trim());
             double price = Double.parseDouble(parts[5].trim());
-            int topSpeed = Integer.parseInt(parts[6].trim());
+            int horsepower = Integer.parseInt(parts[6].trim());
             int seats = Integer.parseInt(parts[7].trim());
             int mileage = Integer.parseInt(parts[8].trim());
             boolean hasTruckBed = Boolean.parseBoolean(parts[9].trim());
 
             return switch (type) {
-                case "SPORTS" -> new SportsCar(brand, model, transmission, year, price, topSpeed, mileage, seats);
-                case "SEDAN" -> new Sedan(brand, model, transmission, year, price, topSpeed, mileage, seats);
-                case "SUV" -> new SUV(brand, model, transmission, year, price, topSpeed, mileage, seats);
-                case "TRUCK" -> new Truck(brand, model, transmission, year, price, topSpeed, mileage, seats);
+                case "SPORTS" -> new SportsCar(brand, model, transmission, year, price, horsepower, mileage, seats);
+                case "SEDAN" -> new Sedan(brand, model, transmission, year, price, horsepower, mileage, seats);
+                case "SUV" -> new SUV(brand, model, transmission, year, price, horsepower, mileage, seats);
+                case "TRUCK" -> new Truck(brand, model, transmission, year, price, horsepower, mileage, seats);
                 default -> throw new IllegalArgumentException("Unknown vehicle type: " + type);
             };
         } catch (Exception e) {

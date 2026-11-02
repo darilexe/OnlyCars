@@ -6,17 +6,17 @@ public abstract class Car {
     private String transmission;
     private int year;
     private double price;
-    private int topSpeed;
+    private int horsepower;
     private int mileage;
     private int seats;
 
-    public Car(String brand, String model, String transmission, int year, double price, int topSpeed, int mileage, int seats) {
+    public Car(String brand, String model, String transmission, int year, double price, int horsepower, int mileage, int seats) {
         this.brand = brand;
         this.model = model;
         this.transmission = transmission;
         this.year = year;
         this.price = price;
-        this.topSpeed = topSpeed;
+        this.horsepower = horsepower;
         this.mileage = mileage;
         this.seats = seats;
     }
@@ -27,7 +27,7 @@ public abstract class Car {
     public String getTransmission() { return transmission; }
     public int getYear() { return year; }
     public double getPrice() { return price; }
-    public int getTopSpeed() { return topSpeed; }
+    public int getHorsepower() { return horsepower; }
     public int getMileage() { return mileage; }
     public int getSeats() { return seats; }
 
@@ -43,7 +43,7 @@ public abstract class Car {
             transmission,
             year,
             price,
-            topSpeed,
+            horsepower,
             seats,
             mileage,
             false);  // Default hasTruckBed value
@@ -51,7 +51,7 @@ public abstract class Car {
 
     @Override
     public String toString() {
-        return String.format("%d %s %s%nTransmission: %s%nPrice: $%.2f%nTop Speed: %d mph%nMileage: %d%nSeats: %d",
-            year, brand, model, transmission, price, topSpeed, mileage, seats);
+        return String.format("%d %s %s%nTransmission: %s%nPrice: $%.2f%nHorsepower: %d hp%nMileage: %d%nSeats: %d",
+            year, brand, model, transmission, price, horsepower, mileage, seats);
     }
 }

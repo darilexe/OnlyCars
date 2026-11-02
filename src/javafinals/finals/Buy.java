@@ -29,6 +29,7 @@ import java.io.PrintWriter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public class Buy extends JFrame {
     private static final String FILE_PATH = "Cars.txt";
@@ -135,16 +136,16 @@ public class Buy extends JFrame {
             String transmission = parts[3].trim();
             int year = Integer.parseInt(parts[4].trim());
             double price = Double.parseDouble(parts[5].trim());
-            int topSpeed = Integer.parseInt(parts[6].trim());
+            int horsepower = Integer.parseInt(parts[6].trim());
             int seats = Integer.parseInt(parts[7].trim());
             int mileage = Integer.parseInt(parts[8].trim());
             boolean hasTruckBed = Boolean.parseBoolean(parts[9].trim());
 
             return switch (type) {
-                case "SPORTS" -> new SportsCar(brand, model, transmission, year, price, topSpeed, mileage, seats);
-                case "SEDAN" -> new Sedan(brand, model, transmission, year, price, topSpeed, mileage, seats);
-                case "SUV" -> new SUV(brand, model, transmission, year, price, topSpeed, mileage, seats);
-                case "TRUCK" -> new Truck(brand, model, transmission, year, price, topSpeed, mileage, seats);
+                case "SPORTS" -> new SportsCar(brand, model, transmission, year, price, horsepower, mileage, seats);
+                case "SEDAN" -> new Sedan(brand, model, transmission, year, price, horsepower, mileage, seats);
+                case "SUV" -> new SUV(brand, model, transmission, year, price, horsepower, mileage, seats);
+                case "TRUCK" -> new Truck(brand, model, transmission, year, price, horsepower, mileage, seats);
                 default -> throw new IllegalArgumentException("Unknown vehicle type: " + type);
             };
         } catch (Exception e) {
@@ -180,16 +181,16 @@ public class Buy extends JFrame {
     }
 
 private void showTransactionBuy(Car car) {
-    TransactionBuyGUI transactionGUI = new TransactionBuyGUI((float) car.getPrice(), () -> {
-        displayCars();
-        showPersonalInfoPrompt(car);
+    TransactionBuyGUI transactionGUI = new TransactionBuyGUI((float) car.getPrice(), (monthlyPayment, months) -> {
         Cars.remove(car);
         saveCarsToFile();
+        displayCars();
+        showPersonalInfoPrompt(car, monthlyPayment, months);
     });
     transactionGUI.setVisible(true);
 }
 
-private void showPersonalInfoPrompt(Car car) {
+private void showPersonalInfoPrompt(Car car, float monthlyPayment, int months) {
     // Prompt for user details
     JTextField nameField = new JTextField();
     JTextField addressField = new JTextField();
@@ -220,14 +221,14 @@ private void showPersonalInfoPrompt(Car car) {
                 "Input Error",
                 JOptionPane.ERROR_MESSAGE
             );
-            showPersonalInfoPrompt(car); // Retry if inputs are invalid
+            showPersonalInfoPrompt(car, monthlyPayment, months); // Retry if inputs are invalid
         } else {
-            showReceipt(name, address, contact, car);
+            showReceipt(name, address, contact, car, monthlyPayment, months);
         }
     }
 }
 
-private void showReceipt(String name, String address, String contact, Car car) {
+private void showReceipt(String name, String address, String contact, Car car, float monthlyPayment, int months) {
     // Generate receipt details
     String receipt = String.format(
         """
@@ -241,6 +242,7 @@ private void showReceipt(String name, String address, String contact, Car car) {
         Vehicle Details:
         Car Name: %s %s
         Price: %.2f
+        Payment Plan: %d months
         Monthly Payment: %.2f
         ------------------------------
         Thank you for your purchase!
@@ -251,7 +253,8 @@ private void showReceipt(String name, String address, String contact, Car car) {
         car.getBrand(),
         car.getModel(),
         car.getPrice(),
-        calculateMonthlyPayment(car.getPrice())
+        months,
+        monthlyPayment
     );
 
     // Show the receipt
@@ -266,20 +269,12 @@ private void showReceipt(String name, String address, String contact, Car car) {
     );
 }
 
-private float calculateMonthlyPayment(double vehicleCost) {//nn
-    // Dummy calculation: assumes 12-month plan with a 5% interest rate
-    float downPayment = (float) vehicleCost * 0.20f;
-    float loanAmount = (float) vehicleCost - downPayment;
-    float interestRate = 0.05f / 12; // Monthly interest for 12 months
-    int months = 12; // Fixed to 12 months
-    return (float) ((loanAmount * interestRate) / (1 - Math.pow(1 + interestRate, -months)));
-}
 
 
 
     private static class TransactionBuyGUI extends JFrame {
 
-        public TransactionBuyGUI(float vehicleCost, Runnable onPurchase) {
+        public TransactionBuyGUI(float vehicleCost, BiConsumer<Float, Integer> onPurchase) {
 
             setTitle("Buy at OnlyCars");
             setSize(400, 400);
@@ -316,6 +311,10 @@ private float calculateMonthlyPayment(double vehicleCost) {//nn
             JTextField paymentField = new JTextField();
             paymentField.setEditable(false);
 
+            // Remembers the last calculated plan so the receipt matches it
+            final float[] chosenMonthly = new float[1];
+            final int[] chosenMonths = new int[1];
+
             // Calculate Button
             JButton calculateButton = new JButton("Calculate");
             calculateButton.addActionListener(e -> {
@@ -341,6 +340,8 @@ private float calculateMonthlyPayment(double vehicleCost) {//nn
 
                     float monthlyPayment = (float) ((loanAmount * interestRate) / (1 - Math.pow(1 + interestRate, -months)));
                     paymentField.setText(String.format("$%.2f%n", monthlyPayment));
+                    chosenMonthly[0] = monthlyPayment;
+                    chosenMonths[0] = months;
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error during calculation: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -358,7 +359,7 @@ private float calculateMonthlyPayment(double vehicleCost) {//nn
                     return;
                 }
 
-                onPurchase.run();
+                onPurchase.accept(chosenMonthly[0], chosenMonths[0]);
                 dispose();
             });
 
