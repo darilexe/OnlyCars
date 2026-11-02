@@ -39,11 +39,14 @@ public class Options extends JFrame implements ActionListener {
         left = new JPanel();
         left.setLayout(new BorderLayout());
 
-        ImageIcon imageIcon = new ImageIcon("C:\\Users\\nheno\\Documents\\NetBeansProjects\\TN26\\src\\dealership\\OnlyC.jpg");
-        pictureLabel = new JLabel(imageIcon);
-        Image scaledImage = imageIcon.getImage().getScaledInstance(420, 300, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        pictureLabel = new JLabel(scaledIcon);
+        // Banner image is loaded from the working directory; fall back to text if it's missing
+        if (new File("OnlyC.jpg").exists()) {
+            ImageIcon imageIcon = new ImageIcon("OnlyC.jpg");
+            Image scaledImage = imageIcon.getImage().getScaledInstance(420, 300, Image.SCALE_SMOOTH);
+            pictureLabel = new JLabel(new ImageIcon(scaledImage));
+        } else {
+            pictureLabel = new JLabel("OnlyCars", JLabel.CENTER);
+        }
         left.add(pictureLabel, BorderLayout.CENTER);
 
         right = new JPanel();
